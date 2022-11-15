@@ -1,0 +1,47 @@
+@startuml
+'https://plantuml.com/class-diagram
+class Batch{
+    +File[] srcBatch
+    +UnionSet EQInfo
+}
+class ExecutableBuilder{
+    -String GCCPath
+    -String OutputPath
+    -static ExecutableBuilder instance
+    +static ExecutableBuilder GetInstance()
+    +File build(File src,String filename)
+}
+class ProgramCompareTool{
+    -static ProgramCompareTool instance
+    +static ProgramCompareTool GetInstance()
+    +Batch compare(File p1,File p2, String[] testcase)
+}
+class ManualConfirmTool{
+    -static ManualConfirmTool instance
+    +static ManualConfirmTool GetInstance()
+    +Batch ManualConfirm(Batch batch)
+}
+class ProgramInjector{
+    -File Program
+    +SetProgram()
+    +String Inject(String case)
+}
+class TestcaseGenerator{
+    +String[] analyse(File src)
+}
+class Terminal{
+    +StartListening()
+    +ParseCommand()
+    +ExecuteCommand()
+    +StartCompareProcess(Batch batch)
+    +ShowResult(Batch result)
+}
+
+Terminal..>ProgramCompareTool
+ProgramCompareTool..>ExecutableBuilder
+ProgramCompareTool..>ProgramInjector
+ProgramCompareTool..>TestcaseGenerator
+Terminal..>ManualConfirmTool
+Terminal..>Batch
+ManualConfirmTool..>Batch
+@enduml
